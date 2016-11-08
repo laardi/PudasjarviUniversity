@@ -14,11 +14,7 @@
     </head>
     
     <body>
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-                <div id='calendar'></div>
-            </div>
-        </div>
+        <div id='calendar'></div>
     </body>
     
     <script>
