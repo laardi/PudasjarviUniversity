@@ -65,7 +65,7 @@ else
 
       <li><a href="#">Huoneet</a></li>
       <li><a href="#">Omat varaukset</a></li> 
-      <li><a href="#" data-toggle="modal" data-target="#login-modal">Kirjaudu</a></li> 
+      <li><a href="logout.php">Kirjaudu Ulos</a></li> 
     </ul>
   </div>
 </nav>
