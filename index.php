@@ -83,6 +83,9 @@ $(document).ready(function() {
     },
     defaultView: 'agendaWeek',
 	editable: true,
+	firstDay: 1,
+	weekends: false,
+	weekNumbers: true,
 	events: [
 		{
 		 title : 'Dlib Ribin varaus',
