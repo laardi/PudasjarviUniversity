@@ -54,9 +54,7 @@ else
         </nav>
 
         <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-                <iframe id="the_iframe" src="kalenteri.php" width="100%" frameborder="0"></iframe>
-            </div>
+            <iframe id="the_iframe" src="kalenteri.php" width="100%" frameborder="0" scrolling="no"></iframe>
         </div>
 
         <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
