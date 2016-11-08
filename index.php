@@ -1,27 +1,5 @@
 <!DOCTYPE html>
 <?php
-$users = array(    "sampus" => "huuskus",
-                "dlib"   => "rib",
-                "hampus" => "seos",
-                "jarno"  => "1234",
-                "matti"  => "esa");
-$flag = False;
-
-if (isset($_POST['username']) && isset($_POST['password']) && $_POST['login'] = "Kirjaudu")  
-{
-    if (($users[$_POST['username']]) && ($_POST['password'] == $users[$_POST['username']])) 
-    {    
-        /* Cookie expires when browser closes */
-        setcookie('username', $_POST['username'], false);
-        //setcookie('password', md5($_POST['password']), false);
-        setcookie('authorised', "tosi", false);
-    } 
-    else 
-    {
-        $flag = True;
-    }
-}
-
 if (isset($_COOKIE["authorised"]))
     $user = $_COOKIE["username"];
 else
@@ -77,8 +55,8 @@ else
         <div class="loginmodal-container">
             <h1>Kirjaudu sissään</h1><br>
             <form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
-                <input type="text" name="username" placeholder="Käyttäjätunnus">
-                <input type="password" name="password" placeholder="Salasana">
+                <input type="text" name="user" placeholder="Käyttäjätunnus">
+                <input type="password" name="pass" placeholder="Salasana">
                 <input type="submit" name="login" class="login loginmodal-submit" value="Kirjaudu">
             </form>
 
@@ -103,13 +81,19 @@ $(document).ready(function() {
        right: 'today, prev,next'
         // put your options and callbacks here
     },
-    defaultView: 'basicWeek',
+    defaultView: 'agendaWeek',
+	editable: true,
 	events: [
-		{title : 'Dlib Ribin varaus',
-		 start : '2016-11-08',
-		 end   : '2016-11-10',
-		 allDay : true 
-		}
+		{
+		 title : 'Dlib Ribin varaus',
+		 start : '2016-11-08T08:00:00',
+		 end   : '2016-11-08T14:00:00',
+		 },
+		 {
+		 title : 'Käkelän varaus',
+		 start : '2016-11-07T08:00:00',
+		 end   : '2016-11-07T14:00:00',
+		 }
 	]
     })
 
