@@ -11,9 +11,8 @@ if (isset($_GET['username']) && isset($_GET['password']))
 		
 		/* Cookie expires when browser closes */
 		setcookie('username', $_GET['username'], false);
-		setcookie('password', md5($_GET['password']), false);
+		//setcookie('password', md5($_GET['password']), false);
 		setcookie('authorised', "tosi", false);
-		echo "Novittu";
         header('Location: index.php');
     } 
 	else 
