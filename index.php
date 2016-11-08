@@ -81,7 +81,14 @@ $(document).ready(function() {
        right: 'today, prev,next'
         // put your options and callbacks here
     },
-    defaultView: 'basicWeek'
+    defaultView: 'basicWeek',
+	events: [
+		{title : 'Dlib Ribin varaus',
+		 start : '2016-11-08',
+		 end   : '2016-11-10',
+		 allDay : true 
+		}
+	]
     })
 
 });
