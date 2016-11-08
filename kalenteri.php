@@ -31,6 +31,12 @@
         },
         defaultView: 'agendaWeek',
         editable: true,
+		firstDay: 1,
+		weekNumbers: true,
+		weekends: false,
+		minTime: '8:00',
+		maxTime: '16:00',
+		
         events: [
             {
              title : 'Dlib Ribin varaus',
@@ -38,7 +44,7 @@
              end   : '2016-11-08T14:00:00',
              },
              {
-             title : 'Käkelän varaus',
+             title : 'Kakelan varaus',
              start : '2016-11-07T08:00:00',
              end   : '2016-11-07T14:00:00',
              }
