@@ -1,4 +1,6 @@
 <?php
+// THIS FILE IS OBSOLETE
+
 $user = "sampus";
 $pass = "huuskus";
 
