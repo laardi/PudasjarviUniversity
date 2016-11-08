@@ -14,27 +14,35 @@
     </head>
     
     <body>
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-                <div id='calendar'></div>
-            </div>
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+        <div id='calendar'></div>
         </div>
+    </div>
     </body>
     
     <script>
-        $(document).ready(function() {
 
-            // page is now ready, initialize the calendar...
-
-            $('#calendar').fullCalendar({
-            
-            header: {
-               right: 'today, prev,next'
-                // put your options and callbacks here
-            },
-            defaultView: 'basicWeek'
-            })
-
-        });
+        $('#calendar').fullCalendar({
+        
+        header: {
+           right: 'today, prev,next'
+            // put your options and callbacks here
+        },
+        defaultView: 'agendaWeek',
+        editable: true,
+        events: [
+            {
+             title : 'Dlib Ribin varaus',
+             start : '2016-11-08T08:00:00',
+             end   : '2016-11-08T14:00:00',
+             },
+             {
+             title : 'Käkelän varaus',
+             start : '2016-11-07T08:00:00',
+             end   : '2016-11-07T14:00:00',
+             }
+        ]
+        })
     </script>
 </html>
