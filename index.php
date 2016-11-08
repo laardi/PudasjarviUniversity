@@ -1,27 +1,5 @@
 <!DOCTYPE html>
 <?php
-$users = array(    "sampus" => "huuskus",
-                "dlib"   => "rib",
-                "hampus" => "seos",
-                "jarno"  => "1234",
-                "matti"  => "esa");
-$flag = False;
-
-if (isset($_POST['username']) && isset($_POST['password']) && $_POST['login'] = "Kirjaudu")  
-{
-    if (($users[$_POST['username']]) && ($_POST['password'] == $users[$_POST['username']])) 
-    {    
-        /* Cookie expires when browser closes */
-        setcookie('username', $_POST['username'], false);
-        //setcookie('password', md5($_POST['password']), false);
-        setcookie('authorised', "tosi", false);
-    } 
-    else 
-    {
-        $flag = True;
-    }
-}
-
 if (isset($_COOKIE["authorised"]))
     $user = $_COOKIE["username"];
 else
@@ -112,7 +90,7 @@ else
             height = (height < 0) ? 0 : height;
             document.getElementById('the_iframe').style.height = height + 'px';
         }
-
+        
         // .onload doesn't work with IE8 and older.
         if (iframe.attachEvent) {
             iframe.attachEvent("onload", resizeIframe);
