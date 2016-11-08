@@ -10,14 +10,14 @@ $users = array(    "sampus" => "huuskus",
             
 $flag = False;
 
-if (isset($_GET['username']) && isset($_GET['password'])) 
+if (isset($_POST['username']) && isset($_POST['password'])) 
 {
-    if (($users[$_GET['username']]) && ($_GET['password'] == $users[$_GET['username']])) 
+    if (($users[$_POST['username']]) && ($_POST['password'] == $users[$_POST['username']])) 
     {    
         
         /* Cookie expires when browser closes */
-        setcookie('username', $_GET['username'], false);
-        //setcookie('password', md5($_GET['password']), false);
+        setcookie('username', $_POST['username'], false);
+        //setcookie('password', md5($_POST['password']), false);
         setcookie('authorised', "tosi", false);
         header('Location: index.php');
     } 
@@ -27,12 +27,6 @@ if (isset($_GET['username']) && isset($_GET['password']))
     }
     
 } 
-//else 
-//{
-//    echo 'You must supply a username and password.';
-//}    
-
-///action='{$_SERVER['PHP_SELF']}' method='post'
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +56,7 @@ if ($flag == True)
     <div class="modal-dialog">
         <div class="loginmodal-container">
             <h1>Kirjaudu sissään</h1><br>
-          <form>
+          <form method = "post">
             <input type="text" name="username" placeholder="Käyttäjätunnus">
             <input type="password" name="password" placeholder="Salasana">
             <input type="submit" name="login" class="login loginmodal-submit" value="Kirjaudu">
