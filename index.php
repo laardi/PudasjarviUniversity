@@ -1,9 +1,31 @@
 <!DOCTYPE html>
 <?php
-if (isset($_COOKIE["authorised"]))
+$users = array(    "sampus" => "huuskus",
+                "dlib"   => "rib",
+                "hampus" => "seos",
+                "jarno"  => "1234",
+                "matti"  => "esa");
+$flag = False;
+if (isset($_COOKIE["username"]))
     $user = $_COOKIE["username"];
 else
     $user = Null;
+
+if (isset($_POST['username']) && isset($_POST['password']) && $_POST['login'] = "Kirjaudu")  
+{
+    if (($users[$_POST['username']]) && ($_POST['password'] == $users[$_POST['username']])) 
+    {    
+        /* Cookie expires when browser closes */
+        setcookie('username', $_POST['username'], false);
+        //setcookie('password', md5($_POST['password']), false);
+        setcookie('authorised', "tosi", false);
+        $user = $_POST["username"];
+    } 
+    else 
+    {
+        $flag = True;$user = Null;
+    }
+}   
 ?>
 <html lang="en">
     <head>
@@ -41,13 +63,13 @@ else
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <?php 
-                        if ($user)
+                        if ($user) {
                             echo '
                     <li><a href="#">'.$user.'</a></li>
-                    <li><a href="logout.php">Kirjaudu Ulos</a></li> ';
-                        else
+                        <li><a href="logout.php">Kirjaudu Ulos</a></li> ';}
+                        else {
                             echo '
-                    <li><a href="#" data-toggle="modal" data-target="#login-modal">Kirjaudu</a></li> ';
+                    <li><a href="#" data-toggle="modal" data-target="#login-modal">Kirjaudu</a></li> ';}
                     ?>
                 </ul>
             </div>
