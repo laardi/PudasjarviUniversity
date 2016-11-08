@@ -1,43 +1,9 @@
 <!DOCTYPE html>
 <?php
-//echo 'Hello ' . htmlspecialchars($_COOKIE["authorised"]) . '!';
-//$user = 'sampus';
-//$pass = 'huuskus';
-
 if (!isset($_COOKIE["authorised"]))
-	header('Location: login.php');
+    header('Location: login.php');
 else
-	$user = $_COOKIE["username"];
-	echo 'Hello '.$user.'!';
-	
-//
-//if (isset($_POST['user']) && isset($_POST['pass'])) 
-//{
-//    if (($_POST['user'] == $user) && ($_POST['pass'] == $pass)) {    
-//        
-//        if (isset($_POST['rememberme'])) {
-//            /* Set cookie to last 1 year */
-//            setcookie('username', $_POST['user'], time()+60*60*24*365, '/account', 'www.example.com');
-//            setcookie('password', md5($_POST['password']), time()+60*60*24*365, '/account', 'www.example.com');
-//        
-//        } else {
-//            /* Cookie expires when browser closes */
-//            setcookie('username', $_POST['user'], false, '/account', 'www.example.com');
-//            setcookie('password', md5($_POST['pass']), false, '/account', 'www.example.com');
-//        }
-//        header('Location: index.php');
-//        
-//    } else {
-//        echo 'Username/Password Invalid';
-//    }
-//    
-//} 
-//else 
-//{
-//    echo 'You must supply a username and password.';
-//}
-
-
+    $user = $_COOKIE["username"];
 ?>
 <html lang="en">
 <head>
@@ -61,10 +27,11 @@ else
     <div class="navbar-header">
       <a class="navbar-brand" href="#">Pudasjärvi University</a>
     </div>
-    <ul class="nav navbar-nav">
-
+    <ul class="nav navbar-nav navbar-left">
       <li><a href="#">Huoneet</a></li>
-      <li><a href="#">Omat varaukset</a></li> 
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><?php echo $user;?></a></li>
       <li><a href="logout.php">Kirjaudu Ulos</a></li> 
     </ul>
   </div>
@@ -127,26 +94,26 @@ else
 </div>
 
 <div class="row">
-	<div class="col-xs-8 col-xs-offset-2">
-		<div id='calendar'></div>
-	</div>
+    <div class="col-xs-8 col-xs-offset-2">
+        <div id='calendar'></div>
+    </div>
 </div>
 
 <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
-		<div class="loginmodal-container">
-			<h1>Kirjaudu sissään</h1><br>
-		  <form>
-			<input type="text" name="user" placeholder="Käyttäjätunnus">
-			<input type="password" name="pass" placeholder="Salasana">
-			<input type="submit" name="login" class="login loginmodal-submit" value="Kirjaudu">
-		  </form>
-			
-		  <div class="login-help">
-			<a href="#">Unohtuiko salasana?</a>
-		  </div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="loginmodal-container">
+            <h1>Kirjaudu sissään</h1><br>
+          <form>
+            <input type="text" name="user" placeholder="Käyttäjätunnus">
+            <input type="password" name="pass" placeholder="Salasana">
+            <input type="submit" name="login" class="login loginmodal-submit" value="Kirjaudu">
+          </form>
+            
+          <div class="login-help">
+            <a href="#">Unohtuiko salasana?</a>
+          </div>
+        </div>
+    </div>
 </div>
 </body>
 
@@ -158,13 +125,13 @@ $(document).ready(function() {
     // page is now ready, initialize the calendar...
 
     $('#calendar').fullCalendar({
-	
-	header: {
-	   right: 'today, prev,next'
+    
+    header: {
+       right: 'today, prev,next'
         // put your options and callbacks here
-	},
-	defaultView: 'basicWeek'
-	})
+    },
+    defaultView: 'basicWeek'
+    })
 
 });
 </script>

@@ -2,22 +2,28 @@
 $user = "sampus";
 $pass = "huuskus";
 
+$users = array(    "sampus" => "huuskus",
+                "dlib"   => "rib",
+                "hampus" => "seos",
+                "jarno"  => "1234",
+                "matti"  => "esa");
+            
 $flag = False;
 
 if (isset($_GET['username']) && isset($_GET['password'])) 
 {
-    if (($_GET['username'] == $user) && ($_GET['password'] == $pass)) 
-	{    
-		
-		/* Cookie expires when browser closes */
-		setcookie('username', $_GET['username'], false);
-		//setcookie('password', md5($_GET['password']), false);
-		setcookie('authorised', "tosi", false);
+    if (($users[$_GET['username']]) && ($_GET['password'] == $users[$_GET['username']])) 
+    {    
+        
+        /* Cookie expires when browser closes */
+        setcookie('username', $_GET['username'], false);
+        //setcookie('password', md5($_GET['password']), false);
+        setcookie('authorised', "tosi", false);
         header('Location: index.php');
     } 
-	else 
-	{
-		$flag = True;
+    else 
+    {
+        $flag = True;
     }
     
 } 
@@ -42,30 +48,30 @@ if (isset($_GET['username']) && isset($_GET['password']))
 <body>
 <?php 
 if ($flag == True)
-	echo '<br>
-		<div class="row">
-			<div class="col-xs-4 col-xs-offset-4">
-				<div class="alert alert-danger">
-					<strong>Halt!</strong> Salattu sana tai käyttäjä tunnus väärin! Ota yhteys rehtori Markus "Käkä" Käkelään.
-				</div>
-			</div>
-		</div>
-		';
+    echo '<br>
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-4">
+                <div class="alert alert-danger">
+                    <strong>Halt!</strong> Salattu sana tai käyttäjä tunnus väärin! Ota yhteys rehtori Markus "Käkä" Käkelään.
+                </div>
+            </div>
+        </div>
+        ';
 ?>
 <div id="login-modal">
-	<div class="modal-dialog">
-		<div class="loginmodal-container">
-			<h1>Kirjaudu sissään</h1><br>
-		  <form>
-			<input type="text" name="username" placeholder="Käyttäjätunnus">
-			<input type="password" name="password" placeholder="Salasana">
-			<input type="submit" name="login" class="login loginmodal-submit" value="Kirjaudu">
-		  </form>
-		  <div class="login-help">
-			<a href="#">Unohtuiko sala sana?</a>
-		  </div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="loginmodal-container">
+            <h1>Kirjaudu sissään</h1><br>
+          <form>
+            <input type="text" name="username" placeholder="Käyttäjätunnus">
+            <input type="password" name="password" placeholder="Salasana">
+            <input type="submit" name="login" class="login loginmodal-submit" value="Kirjaudu">
+          </form>
+          <div class="login-help">
+            <a href="#">Unohtuiko sala sana?</a>
+          </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
