@@ -1,5 +1,4 @@
 <?php 
-// TESTING FILE IGNORE THIS FILE
 
 require './vendor/autoload.php';
 

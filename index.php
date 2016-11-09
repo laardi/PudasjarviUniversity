@@ -1,31 +1,13 @@
 <!DOCTYPE html>
 <?php
-$users = array(    "sampus" => "huuskus",
-                "dlib"   => "rib",
-                "hampus" => "seos",
-                "jarno"  => "1234",
-                "matti"  => "esa");
-$flag = False;
-if (isset($_COOKIE["username"]))
-    $user = $_COOKIE["username"];
-else
-    $user = Null;
-
-if (isset($_POST['username']) && isset($_POST['password']) && $_POST['login'] = "Kirjaudu")  
+if (isset($_COOKIE["username"]) && isset($_COOKIE["authorised"]))
 {
-    if (($users[$_POST['username']]) && ($_POST['password'] == $users[$_POST['username']])) 
-    {    
-        /* Cookie expires when browser closes */
-        setcookie('username', $_POST['username'], false);
-        //setcookie('password', md5($_POST['password']), false);
-        setcookie('authorised', "tosi", false);
-        $user = $_POST["username"];
-    } 
-    else 
-    {
-        $flag = True;$user = Null;
-    }
-}   
+    $user = $_COOKIE["username"];
+}
+else
+{
+    $user = Null;
+}
 ?>
 <html lang="en">
     <head>
@@ -83,14 +65,20 @@ if (isset($_POST['username']) && isset($_POST['password']) && $_POST['login'] = 
             <div class="modal-dialog">
                 <div class="loginmodal-container">
                     <h1>Kirjaudu sissään</h1><br>
-                    <form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
-                        <input type="text" name="username" placeholder="Käyttäjätunnus">
-                        <input type="password" name="password" placeholder="Salasana">
-                        <input type="submit" name="login" class="login loginmodal-submit" value="Kirjaudu">
+                    <form id="login_form" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
+                        <input id="username" type="text" name="username" placeholder="Käyttäjätunnus">
+                        <input id="password" type="password" name="password" placeholder="Salasana">
+                        <input id="login_button" type="submit" name="login" class="login loginmodal-submit" value="Kirjaudu">
                     </form>
 
                     <div class="login-help">
                         <a href="#">Unohtuiko salasana? Hajoa itseesi.</a>
+                    </div>
+                    <div id="error" class="alert alert-danger alert-dismissable" style="display: none;">
+                        <strong>Halt!</strong> Salasana tai tunnus väärä. Ota yhteys Kansleri Käkelään
+                        <button type = "button" class = "close" data-dismiss = "alert" aria-hidden = "true">
+                            &times;
+                        </button>
                     </div>
                 </div>
             </div>
