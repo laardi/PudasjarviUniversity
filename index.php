@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <?php
+require_once __DIR__ . './vendor/autoload.php';
+
 if (isset($_COOKIE["username"]) && isset($_COOKIE["authorised"]))
 {
     $user = $_COOKIE["username"];
@@ -41,7 +43,15 @@ else
                     <a class="navbar-brand" href="#">Pudasjärvi University</a>
                 </div>
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a href="#">Huoneet</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Valitse Huone 
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a id="huone1" href="#">Huone 1</a></li>
+                            <li><a id="huone2" href="#">Huone 2</a></li>
+                            <li><a id="huone3" href="#">Huone 3</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <?php 
@@ -57,8 +67,9 @@ else
             </div>
         </nav>
 
-        <div class="row">
-            <iframe id="the_iframe" src="kalenteri.php" width="100%" frameborder="0" scrolling="no"></iframe>
+        <div class="row" id="main_area">
+            <!-- <iframe id="the_iframe" src="etusivu.php" width="95%" frameborder="0" scrolling="no"></iframe> -->
+            <!-- TÄHÄN PUKATAAN JUTTUA -->
         </div>
 
         <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -84,32 +95,5 @@ else
             </div>
         </div>
     </body>
-    <script>
-        var buffer = 20; //scroll bar buffer
-        var iframe = document.getElementById('the_iframe');
-
-
-        function pageY(elem) {
-            return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
-        }
-
-
-        function resizeIframe() {
-            var height = document.documentElement.clientHeight;
-            height -= pageY(document.getElementById('the_iframe'))+ buffer ;
-            height = (height < 0) ? 0 : height;
-            document.getElementById('the_iframe').style.height = height + 'px';
-        }
-        
-        // .onload doesn't work with IE8 and older.
-        if (iframe.attachEvent) {
-            iframe.attachEvent("onload", resizeIframe);
-        } else {
-            iframe.onload=resizeIframe;
-        }
-
-        window.onresize = resizeIframe;
-    </script>
-
 </html>
 

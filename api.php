@@ -23,7 +23,7 @@ $app = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
 // Lisätään containeriin loggeri
 $container['logger'] = function($c) {
-    $logger = new \Monolog\Logger('Keyloggeri wtf');
+    $logger = new \Monolog\Logger('API logger');
     $file_handler = new \Monolog\Handler\StreamHandler("logs/slim_app.log");
     $logger->pushHandler($file_handler);
     return $logger;
