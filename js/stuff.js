@@ -5,42 +5,89 @@ $( document ).ready(function() {
     //$('.datepicker').datepicker();
     console.log("ready, ime sykkivää");
     
-    //$( '#hinttari' ).click( function(event) {
-    //    var formData = $( '#varaus-form' ).serialize();
-    //    //e.preventDefault();
-    //    //alert("DSFFD");
-    //    //console.log("BÖH") ;
-    //    //console.log(formData);
-    //    var ding = formData.split("&");
-    //    //console.log(ding);
-    //    var tempArray = {} ;
-    //    for ( i=0; i < ding.length; i++) {
-    //        //console.log(ding[i]);
-    //        var doodle = ding[i].split("=");
-    //        //console.log(doodle);
-    //        tempArray[doodle[0]] = doodle[1];
-    //    }
-    //    
-    //    console.log(tempArray["alakupvm"]);
-    //    console.log(tempArray["loppupvm"]);
-    //    console.log(tempArray["user"]);
-    //    console.log(tempArray["room"]);
-    //    
-    //    var dataToSend =    {"template":
-    //                            {"data":
-    //                                [
-    //                                {"prompt":"","name":"user","value":""},
-    //                                {"prompt":"","name":"rdate","value":""},
-    //                                {"prompt":"","name":"ldate","value":""},
-    //                                {"prompt":"","name":"item","value":""},
-    //                                ]
-    //                            }
-    //                        };
-    //    
-    //    
-    //    
-    //    return false;
-    //});
+    $.get('huone.php?huone=1', function ( data ) {
+        console.log("Got something");
+        $("#main_area").html( data );
+    });
+    
+
+    // Huoneiden dropdown valikon nääppäilyt
+    $( '#huone1' ).click( function(event) {
+        $.get('huone.php?huone=1', function ( data ) {
+            $("#main_area").html( data );
+        });
+    });
+    $( '#huone2' ).click( function(event) {
+        $.get('huone.php?huone=2', function ( data ) {
+            $("#main_area").html( data );
+        });
+    });
+    $( '#huone3' ).click( function(event) {
+        $.get('huone.php?huone=3', function ( data ) {
+            $("#main_area").html( data );
+        });
+    });
+    
+    
+    $( '#login_button' ).click( function(event) {
+        //var formData = $( '#login_form' ).serializeArray();
+        //console.log("Böh");
+        //e.preventDefault();
+        //console.log(formData);
+        var user = $( '#username' ).val();
+        var pass = $( '#password' ).val();
+        //console.log(user);
+        $.ajax(
+        {
+            type: "POST",
+            url: "api.php/log/",
+            data: $( '#login_form' ).serialize(),
+            success: function(html)
+            {
+                if(html=="True")
+                {
+                    window.location="../";
+                    //console.log("yritetään ohjata indexiin");
+                }
+                else
+                {
+                    $( "#error" ).show();
+                    //console.log(html);
+                    //console.log("Virheellinen yhistelmä");
+                }
+            }
+        });
+        return false;
+    });
+    
+    // --------------------------
+    
+    $('#calendar').fullCalendar({
+        
+        header: {
+           right: 'today, prev,next'
+        },
+        defaultView: 'agendaWeek',
+        editable: true,
+		firstDay: 1,
+		weekNumbers: true,
+		weekends: false,
+		minTime: '8:00',
+		maxTime: '16:00',
+		
+        events: [
+            {
+             title : 'Dlib Ribin varaus',
+             start : '2017-02-02T08:00:00',
+             end   : '2017-02-02T12:00:00',
+             },
+             {
+             title : 'Kakelan varaus',
+             start : '2017-02-01T10:00:00',
+             end   : '2017-02-01T14:00:00',
+             }
+        ]
+    });
 });
 
 

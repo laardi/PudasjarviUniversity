@@ -1,31 +1,15 @@
 <!DOCTYPE html>
 <?php
-$users = array(    "sampus" => "huuskus",
-                "dlib"   => "rib",
-                "hampus" => "seos",
-                "jarno"  => "1234",
-                "matti"  => "esa");
-$flag = False;
-if (isset($_COOKIE["username"]))
-    $user = $_COOKIE["username"];
-else
-    $user = Null;
+require_once __DIR__ . './vendor/autoload.php';
 
-if (isset($_POST['username']) && isset($_POST['password']) && $_POST['login'] = "Kirjaudu")  
+if (isset($_COOKIE["username"]) && isset($_COOKIE["authorised"]))
 {
-    if (($users[$_POST['username']]) && ($_POST['password'] == $users[$_POST['username']])) 
-    {    
-        /* Cookie expires when browser closes */
-        setcookie('username', $_POST['username'], false);
-        //setcookie('password', md5($_POST['password']), false);
-        setcookie('authorised', "tosi", false);
-        $user = $_POST["username"];
-    } 
-    else 
-    {
-        $flag = True;$user = Null;
-    }
-}   
+    $user = $_COOKIE["username"];
+}
+else
+{
+    $user = Null;
+}
 ?>
 <html lang="en">
     <head>
@@ -59,7 +43,15 @@ if (isset($_POST['username']) && isset($_POST['password']) && $_POST['login'] = 
                     <a class="navbar-brand" href="#">Pudasjärvi University</a>
                 </div>
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a href="#">Huoneet</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Valitse Huone 
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a id="huone1" href="#">Huone 1</a></li>
+                            <li><a id="huone2" href="#">Huone 2</a></li>
+                            <li><a id="huone3" href="#">Huone 3</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <?php 
@@ -75,53 +67,33 @@ if (isset($_POST['username']) && isset($_POST['password']) && $_POST['login'] = 
             </div>
         </nav>
 
-        <div class="row">
-            <iframe id="the_iframe" src="kalenteri.php" width="100%" frameborder="0" scrolling="no"></iframe>
+        <div class="row" id="main_area">
+            <!-- <iframe id="the_iframe" src="etusivu.php" width="95%" frameborder="0" scrolling="no"></iframe> -->
+            <!-- TÄHÄN PUKATAAN JUTTUA -->
         </div>
 
         <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
             <div class="modal-dialog">
                 <div class="loginmodal-container">
                     <h1>Kirjaudu sissään</h1><br>
-                    <form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
-                        <input type="text" name="username" placeholder="Käyttäjätunnus">
-                        <input type="password" name="password" placeholder="Salasana">
-                        <input type="submit" name="login" class="login loginmodal-submit" value="Kirjaudu">
+                    <form id="login_form" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
+                        <input id="username" type="text" name="username" placeholder="Käyttäjätunnus">
+                        <input id="password" type="password" name="password" placeholder="Salasana">
+                        <input id="login_button" type="submit" name="login" class="login loginmodal-submit" value="Kirjaudu">
                     </form>
 
                     <div class="login-help">
                         <a href="#">Unohtuiko salasana? Hajoa itseesi.</a>
                     </div>
+                    <div id="error" class="alert alert-danger alert-dismissable" style="display: none;">
+                        <strong>Halt!</strong> Salasana tai tunnus väärä. Ota yhteys Kansleri Käkelään
+                        <button type = "button" class = "close" data-dismiss = "alert" aria-hidden = "true">
+                            &times;
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </body>
-    <script>
-        var buffer = 20; //scroll bar buffer
-        var iframe = document.getElementById('the_iframe');
-
-
-        function pageY(elem) {
-            return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
-        }
-
-
-        function resizeIframe() {
-            var height = document.documentElement.clientHeight;
-            height -= pageY(document.getElementById('the_iframe'))+ buffer ;
-            height = (height < 0) ? 0 : height;
-            document.getElementById('the_iframe').style.height = height + 'px';
-        }
-        
-        // .onload doesn't work with IE8 and older.
-        if (iframe.attachEvent) {
-            iframe.attachEvent("onload", resizeIframe);
-        } else {
-            iframe.onload=resizeIframe;
-        }
-
-        window.onresize = resizeIframe;
-    </script>
-
 </html>
 
