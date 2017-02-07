@@ -9,7 +9,7 @@ $rooms = array( 1 => "Huone 1",
 $room_no = $_GET['huone'];
 $room = $rooms[$room_no];
 
-//echo "NAHKAJOOSEPIN MUNA ".$room;
+//echo $room;
 
 //echo '
 //<div class="container-fluid">
@@ -26,7 +26,6 @@ $room = $rooms[$room_no];
 //';
 
 if ($room_no == 1) {
-    //echo "PEENIS";
     echo file_get_contents('kalenteri.php');
 }
 

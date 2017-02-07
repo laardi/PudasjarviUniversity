@@ -5,10 +5,10 @@ $( document ).ready(function() {
     //$('.datepicker').datepicker();
     console.log("ready, ime sykkivää");
     
-    $.get('huone.php?huone=1', function ( data ) {
-        console.log("Got something");
-        $("#main_area").html( data );
-    });
+    //$.get('huone.php?huone=1', function ( data ) {
+    //    console.log("Got something");
+    //    $("#main_area").html( data );
+    //});
     
 
     // Huoneiden dropdown valikon nääppäilyt
