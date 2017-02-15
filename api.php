@@ -2,11 +2,6 @@
 
 require './vendor/autoload.php';
 
-// Muuttujia
-//$servername = "localhost";
-//$dbname     = "pudb";
-//$username   = "pudisaccess";
-//$password   = "seos";
 include_once 'sql_conf.php';
 
 // Slimmi app

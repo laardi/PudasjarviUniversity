@@ -1,18 +1,4 @@
-    <div class="row">
-        <div class="col-xs-8 col-xs-offset-2">
-            <?php echo "Alla näet varaustilanteen tilan ".$room." osalta."; ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-8 col-xs-offset-2">
-        <div id='calendar'></div>
-        </div>
-    </div>
-
-    
 <?php
-
-
 function getWeek($week, $year) {
     $paivat = array("Ma", "Ti", "Ke", "To", "Pe", "La", "Su" );
     $dto = new DateTime();
@@ -28,7 +14,9 @@ $vuosi  = date("Y", strtotime("now"));
 $viikko = getWeek($viikkoNro ,$vuosi);
 
 ?>
-
+<div class="well">
+    Basic well. 
+</div>'
 <div class="container">
     <table  class="table table-striped">
           <tr>

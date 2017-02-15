@@ -2,32 +2,36 @@
 
 
 $( document ).ready(function() {
-    //$('.datepicker').datepicker();
-    console.log("ready, ime sykkivää");
-    
-    //$.get('huone.php?huone=1', function ( data ) {
-    //    console.log("Got something");
-    //    $("#main_area").html( data );
-    //});
+    console.log("Sivun lataus valmis.");
     
 
     // Huoneiden dropdown valikon nääppäilyt
     $( '#huone1' ).click( function(event) {
-        $.get('huone.php?huone=1', function ( data ) {
-            $("#main_area").html( data );
-        });
+        console.log("Valittu huone1");
+        roomSelection(1);
     });
     $( '#huone2' ).click( function(event) {
-        $.get('huone.php?huone=2', function ( data ) {
-            $("#main_area").html( data );
-        });
+        console.log("Valittu huone2");
+        roomSelection(2);
     });
     $( '#huone3' ).click( function(event) {
-        $.get('huone.php?huone=3', function ( data ) {
+        console.log("Valittu huone3");
+        roomSelection(3);
+    });
+    // 
+    $( '#index' ).click( function(event) {
+        //window.location="../";
+        $.get('etusivu.php', function ( data ) {
             $("#main_area").html( data );
         });
     });
-    
+    $( '#omatVaraukset' ).click( function(event) {
+        console.log("Omat varaukset");
+        $.get('userIndex.php', function ( data ) {
+            $("#main_area").html( data );
+        });
+    });
+
     
     $( '#login_button' ).click( function(event) {
         //var formData = $( '#login_form' ).serializeArray();
@@ -60,34 +64,41 @@ $( document ).ready(function() {
         return false;
     });
     
-    // --------------------------
     
-    $('#calendar').fullCalendar({
+    function roomSelection( roomID ) {
+            $.get('huone.php?huone='+roomID, function ( data ) {
+            $("#main_area").html( data );
+            kalenteri();
+        });
+    }
         
-        header: {
-           right: 'today, prev,next'
-        },
-        defaultView: 'agendaWeek',
-        editable: true,
-		firstDay: 1,
-		weekNumbers: true,
-		weekends: false,
-		minTime: '8:00',
-		maxTime: '16:00',
-		
-        events: [
-            {
-             title : 'Dlib Ribin varaus',
-             start : '2017-02-02T08:00:00',
-             end   : '2017-02-02T12:00:00',
-             },
-             {
-             title : 'Kakelan varaus',
-             start : '2017-02-01T10:00:00',
-             end   : '2017-02-01T14:00:00',
-             }
-        ]
-    });
+    function kalenteri() {
+        $('#calendar').fullCalendar({
+            header: {
+               right: 'today, prev,next'
+            },
+            defaultView: 'agendaWeek',
+            editable: true,
+            firstDay: 1,
+            weekNumbers: true,
+            weekends: false,
+            minTime: '8:00',
+            maxTime: '16:00',
+            
+            events: [
+                {
+                 title : 'Dlib Ribin varaus',
+                 start : '2017-02-02T08:00:00',
+                 end   : '2017-02-02T12:00:00',
+                 },
+                 {
+                 title : 'Kakelan varaus',
+                 start : '2017-02-01T10:00:00',
+                 end   : '2017-02-01T14:00:00',
+                 }
+            ]
+        });
+    }
 });
 
 
