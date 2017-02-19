@@ -1,7 +1,9 @@
     <div class="row">
-        <div class="col-xs-8 col-xs-offset-2">
-            <?php echo "Alla näet varaustilanteen tilan ".$room." osalta."; ?>
+        <div class="col-xs-4 col-xs-offset-4">
+            <?php echo "Alla näet varaustilanteen tilan ".$room." osalta."; ?><br>
         </div>
+    </div>
+    <div class="row">
     </div>
 <?php
     //<div class="row">
@@ -48,7 +50,7 @@ $viikko = getWeek($viikkoNro ,$vuosi);
                         echo "<tr>";
                         echo "<td>$i-$j</td>";
                         for ($k=1; $k<=7; $k++) {
-                            echo "<td>Jill</td>";
+                            echo "<td>varattu</td>";
                         }
                         echo "</tr>";
                     }

@@ -1,6 +1,6 @@
 <?php 
 
-require './vendor/autoload.php';
+//require './vendor/autoload.php';
 
 include_once 'sql_conf.php';
 
