@@ -26,8 +26,14 @@ function userReservations(user) {
             //console.log(reservs);
             //console.log(JSON.parse(reservs));
             //console.log(JSON.stringify(JSON.parse(reservs)));
-            
-            var html = drawReservationTable(JSON.parse(reservs));
+            console.log(reservs);
+            console.log(reservs.length);
+            if (reservs.length >2) {
+                var html = drawReservationTable(JSON.parse(reservs));
+            }
+            else {
+                var html = drawReservationTable();
+            }
             //console.log(html);
             $("#main_area").html( html );
         }
@@ -110,6 +116,7 @@ function getDaysOfWeek() {
 
 function drawReservationTable(reservations)  {
     // reservations = array jonka sisällä varaukset
+    if (typeof reservations == 'object') {
     var html = '<div class="container">                                                                                                         ';
     html =html+ '    <div class="row">                                                                                                           ';
     html =html+ '        <div class="col-xs-5 col-xs-offset-3">                                                                                  ';
@@ -135,7 +142,18 @@ function drawReservationTable(reservations)  {
     html =html+ '        </table>                                                                                                                ';
     html =html+ '        </div>                                                                                                                  ';
     html =html+ '    </div>                                                                                                                      ';
-    html =html+ '</div>                                                                                                                          ';
+    html =html+ '</div>';
+    }
+    else {
+    var html = '<div class="container">';
+    html = html+ ' <div class="row">';
+    html = html+ ' <div class="col-xs-4 col-xs-offset-4">';
+    html = html+ ' Sinulla ei ole yhtään voimassaolevaa varausta.<br>';
+    html = html+ ' Voit varata ylläolevan "Valitse huone" valikon kautta itsellesi tiloja.'; 
+    html = html+ ' </div>';
+    html = html+ ' </div>';
+    html = html+ ' </div>';
+    }
     return html;
 }
 
@@ -192,7 +210,7 @@ $( document ).ready(function() {
             data: $( '#login_form' ).serialize(),
             success: function(html)
             {
-                //console.log(html);
+                console.log(html);
                 if(html)
                 {
                     //console.log(USERID);

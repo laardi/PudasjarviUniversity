@@ -1,8 +1,6 @@
 <?php 
 
-echo "Tecstin";
 require './vendor/autoload.php';
-echo "Testint";
 
 include_once 'sql_conf.php';
 
@@ -108,6 +106,7 @@ $app->post('/log/', function ($request, $response) {
     $this->logger->addInfo("Data parsettu");
     $username = $data["username"];
     $password = md5($data["password"]);
+    $this->logger->addInfo("Tunnus :".$username);
     $query1 = "select ID from users where username = :user";
     $query2 = "select passhash, ID from passwords where ID = ':id'";
     $this->logger->addInfo("Aletaan kyseleen tietokannalta");
@@ -132,9 +131,10 @@ $app->post('/log/', function ($request, $response) {
         if($password == $passhs)
         {
             setcookie('username', $username, false, "/");
+            //$this->logger->addInfo("y is not work");
             setcookie('userid', $id, false, "/");
             setcookie('authorised', "tosi", false,"/");
-            $this->logger->addInfo("ONNISTUI 3=====D");
+            $this->logger->addInfo("ONNISTUI");
             echo $id;
         }
         else
