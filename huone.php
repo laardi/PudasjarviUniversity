@@ -1,15 +1,13 @@
 <?php
 // Tulostetaan huoneen tietoja
 
-$rooms = array( 1 => "Huone 1",
-                2 => "Huone 2",
-                3 => "Huone 3");
+include("huoneet.php");
 
 $room_no = $_GET['huone'];
-$room = $rooms[$room_no];
+$room = $huoneet[$room_no];
 
 
-if ($room_no < 4) {
+if ($room_no <= count($huoneet)) {
     //echo file_get_contents('kalenteri.php');
     include('kalenteri.php');
 }

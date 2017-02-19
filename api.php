@@ -49,8 +49,8 @@ $app->get('/users/', function () {
     echo json_encode($users);
 });
 
-// ------------------------ GET /USERS/ID ----------------------
-$app->get('/users/{id}', function ($request, $response, $args) {
+// ------------------------ GET /USERS/ID/ID ----------------------
+$app->get('/users/id/{id}/', function ($request, $response, $args) {
 
     $id = (int)$args['id'];
     $this->logger->addInfo("Username by id");
@@ -62,6 +62,42 @@ $app->get('/users/{id}', function ($request, $response, $args) {
     //return $response;
     echo json_encode($user);
 });
+
+// ------------------------ GET /USERS/USERNAME ----------------------
+$app->get('/users/{username}/', function ($request, $response, $args) {
+
+    $username = $args['username'];
+    $this->logger->addInfo("Id by username:".$username);
+    $stmt = $this->db->prepare("select id from users where username = :username");
+    $stmt->bindParam(":username",$username);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    //$response->getBody()->write(var_export($users, true));
+    //return $response;
+    echo json_encode($user);
+});
+
+
+
+// ------------------------- GET /USERS/ID/RESERVATIONS --------
+$app->get('/users/reservations/{id}/', function ($request, $response, $args) {
+    $id = (int)$args['id'];
+    //$resid = (int)$args['resid'];
+    $this->logger->addInfo("Reservation by userid");
+    $stmt = $this->db->prepare("select locations.name, reservations.resid, reservations.starttime, reservations.endtime from reservations join locations on locations.ID = reservations.location where reservations.userid = :id");
+    $stmt->bindParam(":id",$id);
+    $stmt->execute();
+    $reservations = $stmt->fetchall(PDO::FETCH_ASSOC);
+    //$response->getBody()->write(var_export($users, true));
+    //return $response;
+    echo json_encode($reservations);
+});
+
+// ------------------------- GET /USERS/RESERVATIONS --------
+
+
+
+
 
 // ------------------------ POST /LOG/ -----------------------
 $app->post('/log/', function ($request, $response) {
@@ -94,9 +130,10 @@ $app->post('/log/', function ($request, $response) {
         if($password == $passhs)
         {
             setcookie('username', $username, false, "/");
+            setcookie('userid', $id, false, "/");
             setcookie('authorised', "tosi", false,"/");
             $this->logger->addInfo("ONNISTUI 3=====D");
-            echo "True";
+            echo $id;
         }
         else
         {

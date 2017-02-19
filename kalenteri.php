@@ -3,14 +3,14 @@
             <?php echo "Alla näet varaustilanteen tilan ".$room." osalta."; ?>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-8 col-xs-offset-2">
-        <div id='calendar'></div>
-        </div>
-    </div>
+<?php
+    //<div class="row">
+    //    <div class="col-xs-8 col-xs-offset-2">
+    //    <div id='calendar'></div>
+    //    </div>
+    //</div>
 
     
-<?php
 
 
 function getWeek($week, $year) {
@@ -18,7 +18,7 @@ function getWeek($week, $year) {
     $dto = new DateTime();
     $dto->setISODate($year, $week);
     foreach ($paivat as $paiva){
-        $ret[$paiva] = $dto->format('d.m.Y');
+        $ret[$paiva] = $dto->format('d.m');
         $dto->modify('+1 days');
     }
     return $ret;
@@ -27,10 +27,12 @@ $viikkoNro = date("W", strtotime("now"));
 $vuosi  = date("Y", strtotime("now"));
 $viikko = getWeek($viikkoNro ,$vuosi);
 
+
+
 ?>
 
 <div class="container">
-    <table  class="table table-striped">
+    <table  class="table table-striped table-condensed table-bordered">
           <tr>
                 <td><b>Kello</b></td>
                 <?php 
@@ -40,18 +42,20 @@ $viikko = getWeek($viikkoNro ,$vuosi);
                 ?>
 
           </tr>
-          <tr>
-                <td>08:00-10:00</td>
                 <?php
-                    for ($i=1; $i<=7; $i++) {
-                        echo "<td>Jill</td>";
+                    for ($i=8; $i<=18; $i=$i+2) {
+                        $j = $i +2;
+                        echo "<tr>";
+                        echo "<td>$i-$j</td>";
+                        for ($k=1; $k<=7; $k++) {
+                            echo "<td>Jill</td>";
+                        }
+                        echo "</tr>";
                     }
+                
+                
+
                 ?>
-          </tr>
-          <tr>
-                <td>Eve</td>
-                <td>Jackson</td> 
-                <td>94</td>
-          </tr>
+
     </table>
 </div>

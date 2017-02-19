@@ -10,6 +10,8 @@ else
 {
     $user = Null;
 }
+
+include("huoneet.php");
 ?>
 <html lang="en">
     <head>
@@ -37,9 +39,11 @@ else
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Valitse Huone 
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a id="huone1" href="#">Huone 1</a></li>
-                            <li><a id="huone2" href="#">Huone 2</a></li>
-                            <li><a id="huone3" href="#">Huone 3</a></li>
+                            <?php
+                            foreach ($huoneet as $nro => $huone) {
+                                echo '<li><a id="huone'.$nro.'" href="#">'.$huone.'</a></li>';
+                            }
+                            ?>
                         </ul>
                     </li>
                 </ul>
@@ -47,7 +51,7 @@ else
                     <?php 
                         if ($user) {
                             echo '
-                    <li><a href="#" id="omatVaraukset">'.$user.'</a></li>
+                    <li><a href="#" id="omatVaraukset">Omat varaukset</a></li>
                         <li><a href="logout.php">Kirjaudu Ulos</a></li> ';}
                         else {
                             echo '
@@ -63,12 +67,12 @@ else
             <!-- <iframe id="the_iframe" src="etusivu.php" width="95%" frameborder="0" scrolling="no"></iframe> -->
             <!-- TÄHÄN PUKATAAN JUTTUA -->
             <?php 
-            if ($user) {
-                include('userIndex.php');
-            }
-            else {
+            //if ($user) {
+            //    include('userIndex.php');
+            //}
+            //else {
                 echo file_get_contents('etusivu.php');
-            }
+            //}
              ?>
         </div>
         

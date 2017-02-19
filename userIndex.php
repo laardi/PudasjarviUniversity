@@ -1,4 +1,7 @@
 <?php
+print_r($_POST);
+echo json_decode($_POST);
+
 function getWeek($week, $year) {
     $paivat = array("Ma", "Ti", "Ke", "To", "Pe", "La", "Su" );
     $dto = new DateTime();
@@ -13,33 +16,32 @@ $viikkoNro = date("W", strtotime("now"));
 $vuosi  = date("Y", strtotime("now"));
 $viikko = getWeek($viikkoNro ,$vuosi);
 
-?>
-<div class="well">
-    Basic well. 
-</div>'
-<div class="container">
-    <table  class="table table-striped">
-          <tr>
-                <td><b>Kello</b></td>
-                <?php 
-                    foreach ($viikko as $paiva=>$maara) {
-                        echo "<th>".$paiva." ".$maara."</th>";
-                    }
-                ?>
+$varaus = array(    "huone"     =>  "Kuivala",
+                    "pvm"       =>  "16.2",
+                    "klo"       =>  "08:00-10:00");
+$varaukset  = array( $varaus );
 
-          </tr>
-          <tr>
-                <td>08:00-10:00</td>
-                <?php
-                    for ($i=1; $i<=7; $i++) {
-                        echo "<td>Jill</td>";
-                    }
-                ?>
-          </tr>
-          <tr>
-                <td>Eve</td>
-                <td>Jackson</td> 
-                <td>94</td>
-          </tr>
-    </table>
+?>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-5 col-xs-offset-3">
+        <table  class="table table-striped table-bordered table-condensed">
+              <tr>
+                    <td><b>Huone</b></td>
+                    <td><b>Pvm</b></td>
+                    <td><b>Klo</b></td>
+                    <td><b>Poista</b></td>
+              </tr>
+              <tr>
+                    <?php
+                        foreach ($varaukset as $varaus) {
+                            //foreach ($varaus as )
+                            echo "<td>".$varaus["huone"]."</td><td>".$varaus["pvm"]."</td><td>".$varaus["klo"]."</td><td></td>";
+                        }
+                    ?>
+              </tr>
+
+        </table>
+        </div>
+    </div>
 </div>
