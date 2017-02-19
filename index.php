@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-require_once __DIR__ . './vendor/autoload.php';
+//require_once __DIR__ . './vendor/autoload.php';
 
 if (isset($_COOKIE["username"]) && isset($_COOKIE["authorised"]))
 {
