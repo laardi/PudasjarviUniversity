@@ -1,7 +1,9 @@
 <?php 
+
 echo "Tecstin";
 require './vendor/autoload.php';
 echo "Testint";
+
 include_once 'sql_conf.php';
 
 // Slimmi app
