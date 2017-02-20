@@ -62,11 +62,14 @@ function roomReservations(room, week) {
                 }
                 //console.log(reservationCalendar);
                 var html = drawReservationCalendar(room, reservationCalendar, week);
-                $("#main_area").html( html );
+                
             }
             else {
                 console.log("Not found stuf");
+                var html = drawReservationCalendar(room, reservationCalendar, week);
             }
+            $("#main_area").html( html );
+            roomReserveButton();
         }
     });
     return reservationCalendar;
@@ -82,8 +85,8 @@ function userReservations(user) {
             //console.log(reservs);
             //console.log(JSON.parse(reservs));
             //console.log(JSON.stringify(JSON.parse(reservs)));
-            console.log(reservs);
-            console.log(reservs.length);
+            //console.log(reservs);
+            //console.log(reservs.length);
             if (reservs.length >2) {
                 var html = drawReservationTable(JSON.parse(reservs));
             }
@@ -136,9 +139,11 @@ function kalenteri() {
 
 function drawReservationCalendar(room, reservations, week) {
     // room = kayttajan ID
+    var rooms = [ "Kuivala", "ATK101", "Auditorio" ];
     var paivat = [ "Ma", "Ti", "Ke", "To", "Pe", "La", "Su" ];
     var uid = getCookie('userid');
     var html =  "<div class='container'>";
+        html += "<div class='col-xs-4 col-xs-offset-4'>Kirjautumalla sisään voit varata tilan "+rooms[room-1]+" alla olevien linkkien kautta.</div>";
         html = html +     "<table  class='table table-striped table-condensed table-bordered'>";
         html = html +         "<tr>";
         html = html +             "<td><b>Kello</b></td>";
@@ -158,13 +163,18 @@ function drawReservationCalendar(room, reservations, week) {
             for (index in week) {
                 var pva = paivat[index];
                 //console.log(week[index]);
-                console.log("asd:"+index+", foo:"+kello[pva]);
+                //console.log("asd:"+index+", foo:"+kello[pva]);
                 
                 if (kello[pva] == "Varattu") {
                     html = html + "<td>  </td>";  // Jos huone on varattu niin jätetään tyhjäksi
                 }
                 else if (uid.length > 0) {
-                    html += "<td><a id='reserve-room' href='/api.php/reserve/"+uid+"/"+room+"/"+week[index]+"/"+i+"/'> Vapaa </td>";
+                    //html += "<td><a class='reserveRoom' href='/api.php/reserve/"+uid+"/"+room+"/"+week[index]+"/"+i+"/'> Vapaa </td>";
+                    
+                    html += '<td><a href="#" data-href="/api.php/reserve/'+uid+'/'+room+'/'+week[index]+'/'+i+'/" data-toggle="modal" data-target="#confirm-reservation">Vapaa</a></td>';
+
+                    //html +='   <td ><button class="btn btn-default" data-href="/api.php/reserve/"+uid+"/"+room+"/"+week[index]+"/"+i+"/" data-toggle="modal" data-target="#confirm-reservation"> Vapaa </button></td>';
+
                 }
                 else {
                     html += "<td> Vapaa</td>";
@@ -201,7 +211,7 @@ function getDaysOfWeek(pvm) {
 function drawReservationTable(reservations)  {
     // reservations = array jonka sisällä varaukset
     if (typeof reservations == 'object') {
-        console.log(reservations);
+        //console.log(reservations);
         var html = '<div class="container">                                                                                                         ';
         html =html+ '    <div class="row">                                                                                                           ';
         html =html+ '        <div class="col-xs-5 col-xs-offset-3">                                                                                  ';
@@ -301,8 +311,38 @@ function enableRooms(rooms) {
     });
 }
 
+function roomReserveButton() {
+    $( '.reserveRoom' ).click( function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        console.log("Clikked link");
+        var href = this.getAttribute('href');
+        console.log(href);
+    });
+}
+
 function enableButtons() {
-    
+    $('#confirm-reservation').on('show.bs.modal', function(e) {
+        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        $('.btn-ok').click( function(e) {
+            var href = $('.btn-ok').attr('href');
+            
+            e.preventDefault();
+            console.log("Dingdong");
+            console.log(href);
+        });
+        //window.location="../";
+        //var href = $(this).find
+        //e.preventDefault();
+        //console.log(href);
+        //$.get(href, function (data) {
+        //    if (data=="True"){
+        //        console.log("Onnistui");
+        //    }
+        //})
+        //$("#confirm-reservation .close").click();
+       // return false;
+    });
 
     // Yliopiston nimen kliksautus
     $( '#index' ).click( function(event) {
@@ -360,7 +400,7 @@ function enableButtons() {
 
 $( document ).ready(function() {
     //console.log(getDaysOfWeek(new Date()));
-
+    
     $.ajax(
     {
         type:"GET",
@@ -372,6 +412,7 @@ $( document ).ready(function() {
         }
     });
     enableButtons();
+    
     console.log("Sivun lataus valmis.");
 });
 

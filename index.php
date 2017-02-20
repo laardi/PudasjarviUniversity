@@ -20,6 +20,7 @@ include("huoneet.php");
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/login.css"> 
+        <link rel="stylesheet" type="text/css" href="css/table.css"> 
         <link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -100,6 +101,29 @@ include("huoneet.php");
                 </div>
             </div>
         </div>
+        
+        <!-- Modal varausta varten-->
+        <div class="modal fade" role="dialog" id="confirm-reservation" aria-hidden="true">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Tilan varaus</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Pitäskö varata</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-success btn-ok">Kyllä</a>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Ei</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
     </body>
 </html>
 

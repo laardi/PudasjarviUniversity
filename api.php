@@ -125,24 +125,40 @@ $app->get('/reservations/{id}/{start}/{end}/', function ($request, $response, $a
 });
 
 // ------------------------- GET /RESERVE/USERID/ROOMID/DAY/HOUR/ --------
-//$app->get('/reservations/{id}/{start}/{end}/', function ($request, $response, $args) {
-//
-//    $id = (int)$args['id'];
-//    $start = (string)$args['start'];
-//    $end = (string)$args['end'];
-//    //$start = strtotime()
-//    //$resid = (int)$args['resid'];
-//    $this->logger->addInfo("Reservation by roomid");
-//    $stmt = $this->db->prepare("SELECT date_format(reservations.date,'%e.%c.%Y') as date, reservations.time from reservations where reservations.location = :id and reservations.date BETWEEN cast( :start as date) and cast( :end as date)");
-//    $stmt->bindParam(":id",$id);
-//    $stmt->bindParam(":start",$start);
-//    $stmt->bindParam(":end",$end);
-//    $stmt->execute();
-//    $reservations = $stmt->fetchall(PDO::FETCH_ASSOC);
-//    //$response->getBody()->write(var_export($users, true));
-//    //return $response;
-//    echo json_encode($reservations);
-//});
+$app->get('/reserve/{uid}/{roomid}/{day}/{hour}/', function ($request, $response, $args) {
+
+    $uid = (int)$args['uid'];
+    $roomid = (int)$args['roomid'];
+    $day = (string)$args['day'];
+
+    $day = explode( ".",    $day);
+    
+    $day = $day[2]."-".$day[1]."-".$day[0];
+    $hour = (int)$args['hour'];
+    $this->logger->addInfo("Reserving by room $roomid for user $uid starting at $hour on $day");
+    $this->logger->addInfo("Let's first check if such a reservation exists already");
+    $stmt1 = $this->db->prepare("select reservations.resid from reservations where reservations.location = :rid and reservations.date = :day and reservations.time = :hour");
+    $stmt1->bindParam(":rid",$roomid);
+    $stmt1->bindParam(":day",$day);
+    $stmt1->bindParam(":hour",$hour);
+    $stmt1->execute();
+    $res = $stmt1->fetch(PDO::FETCH_ASSOC);
+    if (!isset($res)) {
+        $stmt = $this->db->prepare("INSERT INTO `reservations` (`resID`, `userID`, `location`, `starttime`, `endtime`, `date`, `time`) VALUES (NULL, :uid, :rid, '', '', :day, :hour);
+"); 
+        $stmt->bindParam(":uid",$uid);
+        $stmt->bindParam(":rid",$roomid);
+        $stmt->bindParam(":day",$day);
+        $stmt->bindParam(":hour",$hour);
+        
+        $response = $stmt->execute();
+        //$reservations = $stmt->fetchall(PDO::FETCH_ASSOC);
+        //$response->getBody()->write(var_export($users, true));
+        //return $response;
+    echo json_encode($response);
+    }
+    else echo json_encode(false);
+});
 
 // ------------------------ POST /LOG/ -----------------------
 $app->post('/log/', function ($request, $response) {
