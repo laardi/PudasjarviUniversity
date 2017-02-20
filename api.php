@@ -125,24 +125,24 @@ $app->get('/reservations/{id}/{start}/{end}/', function ($request, $response, $a
 });
 
 // ------------------------- GET /RESERVE/USERID/ROOMID/DAY/HOUR/ --------
-$app->get('/reservations/{id}/{start}/{end}/', function ($request, $response, $args) {
-
-    $id = (int)$args['id'];
-    $start = (string)$args['start'];
-    $end = (string)$args['end'];
-    //$start = strtotime()
-    //$resid = (int)$args['resid'];
-    $this->logger->addInfo("Reservation by roomid");
-    $stmt = $this->db->prepare("SELECT date_format(reservations.date,'%e.%c.%Y') as date, reservations.time from reservations where reservations.location = :id and reservations.date BETWEEN cast( :start as date) and cast( :end as date)");
-    $stmt->bindParam(":id",$id);
-    $stmt->bindParam(":start",$start);
-    $stmt->bindParam(":end",$end);
-    $stmt->execute();
-    $reservations = $stmt->fetchall(PDO::FETCH_ASSOC);
-    //$response->getBody()->write(var_export($users, true));
-    //return $response;
-    echo json_encode($reservations);
-});
+//$app->get('/reservations/{id}/{start}/{end}/', function ($request, $response, $args) {
+//
+//    $id = (int)$args['id'];
+//    $start = (string)$args['start'];
+//    $end = (string)$args['end'];
+//    //$start = strtotime()
+//    //$resid = (int)$args['resid'];
+//    $this->logger->addInfo("Reservation by roomid");
+//    $stmt = $this->db->prepare("SELECT date_format(reservations.date,'%e.%c.%Y') as date, reservations.time from reservations where reservations.location = :id and reservations.date BETWEEN cast( :start as date) and cast( :end as date)");
+//    $stmt->bindParam(":id",$id);
+//    $stmt->bindParam(":start",$start);
+//    $stmt->bindParam(":end",$end);
+//    $stmt->execute();
+//    $reservations = $stmt->fetchall(PDO::FETCH_ASSOC);
+//    //$response->getBody()->write(var_export($users, true));
+//    //return $response;
+//    echo json_encode($reservations);
+//});
 
 // ------------------------ POST /LOG/ -----------------------
 $app->post('/log/', function ($request, $response) {
