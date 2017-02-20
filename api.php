@@ -36,6 +36,17 @@ $container['db'] = function ($c) {
 
 
 // ======================== GET ================================
+// ------------------------ GET /LOCATIONS -------------------------
+$app->get('/locations/', function () {
+    $this->logger->addInfo("Location list");
+    $stmt = $this->db->prepare("select id,name from locations");
+    $stmt->execute();
+    $locs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    //$response->getBody()->write(var_export($users, true));
+    //return $response;
+    echo json_encode($locs);
+});
 
 // ------------------------ GET /USERS -------------------------
 $app->get('/users/', function () {
@@ -79,12 +90,12 @@ $app->get('/users/{username}/', function ($request, $response, $args) {
 
 
 
-// ------------------------- GET /USERS/ID/RESERVATIONS --------
+// ------------------------- GET /USERS/RESERVATIONS/ID/ /--------
 $app->get('/users/reservations/{id}/', function ($request, $response, $args) {
     $id = (int)$args['id'];
     //$resid = (int)$args['resid'];
     $this->logger->addInfo("Reservation by userid");
-    $stmt = $this->db->prepare("select locations.name, reservations.resid, reservations.starttime, reservations.endtime from reservations join locations on locations.ID = reservations.location where reservations.userid = :id");
+    $stmt = $this->db->prepare("select locations.name, reservations.resid, date_format(reservations.date,'%e.%c.%Y') as date, reservations.time from reservations join locations on locations.ID = reservations.location where reservations.userid = :id");
     $stmt->bindParam(":id",$id);
     $stmt->execute();
     $reservations = $stmt->fetchall(PDO::FETCH_ASSOC);
@@ -93,11 +104,25 @@ $app->get('/users/reservations/{id}/', function ($request, $response, $args) {
     echo json_encode($reservations);
 });
 
-// ------------------------- GET /USERS/RESERVATIONS --------
+// ------------------------- GET /RESERVATIONS/ID/WEEKSTART/WEEKEND/ --------
+$app->get('/reservations/{id}/{start}/{end}/', function ($request, $response, $args) {
 
-
-
-
+    $id = (int)$args['id'];
+    $start = (string)$args['start'];
+    $end = (string)$args['end'];
+    //$start = strtotime()
+    //$resid = (int)$args['resid'];
+    $this->logger->addInfo("Reservation by roomid");
+    $stmt = $this->db->prepare("SELECT date_format(reservations.date,'%e.%c.%Y') as date, reservations.time from reservations where reservations.location = :id and reservations.date BETWEEN cast( :start as date) and cast( :end as date)");
+    $stmt->bindParam(":id",$id);
+    $stmt->bindParam(":start",$start);
+    $stmt->bindParam(":end",$end);
+    $stmt->execute();
+    $reservations = $stmt->fetchall(PDO::FETCH_ASSOC);
+    //$response->getBody()->write(var_export($users, true));
+    //return $response;
+    echo json_encode($reservations);
+});
 
 // ------------------------ POST /LOG/ -----------------------
 $app->post('/log/', function ($request, $response) {

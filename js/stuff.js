@@ -16,6 +16,49 @@ function getCookie(cname) {
     return "";
 }
 
+function FINtoISO(time) {
+    var time = time.split(".");
+    time = time[2]+"-"+time[1]+"-"+time[0]
+    return time;
+}
+
+function roomReservations(room, week) {
+    var start = FINtoISO(week[0]);
+    var end = FINtoISO(week[6]);
+    var reservationCalendar ={};
+    
+    
+    for (kelo = 8; kelo < 19; kelo = kelo +2) {
+        reservationCalendar[kelo] = {};
+        for (i=0;i<7;i++) {
+            reservationCalendar[kelo][week[i]] = "";
+        }   
+    }
+    //console.log(reservationCalendar);
+      //console.log(start);
+    $.ajax(
+    {
+        type: "GET",
+        url: "api.php/reservations/"+room+"/"+start+"/"+end+"/",
+        success: function(result) {
+            if (result.length > 2) {
+                //console.log(JSON.parse(result));
+                var res = JSON.parse(result);
+
+                while (res.length>0){
+                    var foo = res.shift();
+                    reservationCalendar[foo.time][foo.date] = "Varattu";
+                }
+                //console.log(reservationCalendar);
+            }
+            else {
+                console.log("Not found stuf");
+            }
+        }
+    });
+    return reservationCalendar;
+}
+
 function userReservations(user) {
     $.ajax(
     {
@@ -43,7 +86,8 @@ function userReservations(user) {
 function roomSelection( roomID ) {
         $.get('huone.php?huone='+roomID, function ( data ) {
         $("#main_area").html( data );
-        kalenteri();
+        //kalenteri();
+        drawReservationCalendar(roomID, roomReservations(roomID, getDaysOfWeek(new Date())),getDaysOfWeek(new Date()));
     });
 }
 
@@ -76,93 +120,167 @@ function kalenteri() {
     });
 }    
 
-function drawReservationCalendar(room) {
+function drawReservationCalendar(room, reservations, week) {
     // room = kayttajan ID
-    
+    var paivat = [ "Ma", "Ti", "Ke", "To", "Pe", "La", "Su" ];
     var html =  "<div class='container'>";
-        html +=     "<table  class='table table-striped table-condensed table-bordered'>";
-        html +=         "<tr>";
-        html +=             "<td><b>Kello</b></td>";
-        //                    <?php 
-        //                        foreach ($viikko as $paiva=>$maara) {
-        //                            echo "<th>".$paiva." ".$maara."</th>";
-        //                        }
-        //                    ?>
-        //html +=
-        //html +=         "</tr>";
-        //html +=             <?php
-        //html +=                 for ($i=8; $i<=18; $i=$i+2) {
-        //html +=                     $j = $i +2;
-        //html +=                     echo "<tr>";
-        //html +=                     echo "<td>$i-$j</td>";
-        //html +=                     for ($k=1; $k<=7; $k++) {
-        //html +=                         echo "<td>Jill</td>";
-        //html +=                     }
-        //html +=                     echo "</tr>";
-        //html +=                 }
-        //html +=             ?>
-        html +=     "</table>";
-        html += "</div>'";
+        html = html +     "<table  class='table table-striped table-condensed table-bordered'>";
+        html = html +         "<tr>";
+        html = html +             "<td><b>Kello</b></td>";
+        for (i = 0; i<7 ;i++) {
+            html = html + "<th>"+paivat[i]+" "+week[i]+"</th>";
+        }
+        html = html +         "</tr>";
+        //html = html +                 for ($i=8; $i<=18; $i=$i+2) {
+            
+        console.log(reservations);
+        console.log(reservations[8]["21.2.2017"]);
+
+        
+        for (i = 8; i<19; i = i+2) {
+            for (j=0;j<7;j++) {
+                //html = html + "<tr><td>" + reservations[time] +"-" + (Number(reservations[time])+2) + "</td>";
+                //console.log(i);
+                //console.log(j);
+                //console.log(week[j]);
+                //console.log(reservations[i]);
+                //var poop = reservations[i];
+                //var clit = week[j];
+                //console.log(poop);
+                //console.log(reservations[i][week[1]]);
+                //html = html + "</tr>";
+                //console.log(reservations[time]);
+                
+
+
+                    
+            }
+        }
+            
+            
+        //html = html +                     $j = $i +2;
+        //html = html +                     echo "<tr>";
+        //html = html +                     echo "<td>$i-$j</td>";
+        //html = html +                     for ($k=1; $k<=7; $k++) {
+        //html = html +                         echo "<td>Jill</td>";
+        //html = html +                     }
+        //html = html +                     echo "</tr>";
+        //html = html +                 }
+
+        html = html +     "</table>";
+        html = html + "</div>'";
+        
 }
 
-function getDaysOfWeek() {
-    //var curr = new Date();
-    //var monday = new Date(curr.getDate()-curr.GetDay());
-    //var monday = moment().startOf('isoweek').format("DD.MM");
-    //var monday = moment().isoWeekday(1);
-    var viikko = ["13.2","14.2","15.2","16.2","17.2","18.2","19.2"];
-    return viikko;
+function getMonday(d) {
+    d = new Date(d);
+    var day = d.getDay(), diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+    var foo = new Date(d.setDate(diff))
+    return foo;
+}
+
+function getDaysOfWeek(pvm) {
+    var lista = {};
+    //var dat = new Date();
+    pvm = getMonday(pvm);
+    lista[0] = pvm.toLocaleString().slice(0,9);
+    
+    for (i = 1; i<7; i++) {
+        pvm.setDate(pvm.getDate() + 1);
+        lista[i] = pvm.toLocaleString().slice(0,9);
+    }
+    return lista;
 }
 
 function drawReservationTable(reservations)  {
     // reservations = array jonka sisällä varaukset
     if (typeof reservations == 'object') {
-    var html = '<div class="container">                                                                                                         ';
-    html =html+ '    <div class="row">                                                                                                           ';
-    html =html+ '        <div class="col-xs-5 col-xs-offset-3">                                                                                  ';
-    html =html+ '        <table  class="table table-striped table-bordered table-condensed">                                                     ';
-    html =html+ '              <tr>                                                                                                              ';
-    html =html+ '                    <td><b>Huone</b></td>                                                                                       ';
-    html =html+ '                    <td><b>Pvm</b></td>                                                                                         ';
-    html =html+ '                    <td><b>Klo</b></td>                                                                                         ';
-    html =html+ '                    <td><b></b></td>                                                                                      ';
-    html =html+ '              </tr>                                                                                                             ';
+        console.log(reservations);
+        var html = '<div class="container">                                                                                                         ';
+        html =html+ '    <div class="row">                                                                                                           ';
+        html =html+ '        <div class="col-xs-5 col-xs-offset-3">                                                                                  ';
+        html =html+ '        <table  class="table table-striped table-bordered table-condensed">                                                     ';
+        html =html+ '              <tr>                                                                                                              ';
+        html =html+ '                    <td><b>Huone</b></td>                                                                                       ';
+        html =html+ '                    <td><b>Pvm</b></td>                                                                                         ';
+        html =html+ '                    <td><b>Klo</b></td>                                                                                         ';
+        html =html+ '                    <td><b></b></td>                                                                                      ';
+        html =html+ '              </tr>                                                                                                             ';
+        //reservations = [ {resid:"15",name:"kuivala",date:"17.02",time:"8"}, {resid:"16",name:"atk123",date:"15.02",time:"10"} ];
         for (i = 0; i < reservations.length; i++) {    
             var varausID = reservations[i].resid;
             var paikka = reservations[i].name;
-            var starttime = reservations[i].starttime;
-            var endtime = reservations[i].endtime;
-            var pvm = starttime.slice(6,8)+"."+starttime.slice(4,6); // 2017 0213 1000
-            var klo = starttime.slice(8,10)+":"+starttime.slice(8,10)+"-"+endtime.slice(8,10)+":"+endtime.slice(8,10);
-            
+            var pvm = reservations[i].date;
+            var klo1 = Number(reservations[i].time);
+            var klo = klo1+":00-"+(klo1+2)+":00";
             html =html+ '<tr>'; 
             html =html+ "<td>"+paikka+"</td><td>"+pvm+"</td><td>"+klo+"</td><td><a href='#' id='poistaVaraus' value='"+varausID+"'>Poista</a></td>";   
             html =html+ '</tr>';
         }                                                                                                        
-    html =html+ '        </table>                                                                                                                ';
-    html =html+ '        </div>                                                                                                                  ';
-    html =html+ '    </div>                                                                                                                      ';
-    html =html+ '</div>';
+        html =html+ '        </table>                                                                                                                ';
+        html =html+ '        </div>                                                                                                                  ';
+        html =html+ '    </div>                                                                                                                      ';
+        html =html+ '</div>';
     }
     else {
-    var html = '<div class="container">';
-    html = html+ ' <div class="row">';
-    html = html+ ' <div class="col-xs-4 col-xs-offset-4">';
-    html = html+ ' Sinulla ei ole yhtään voimassaolevaa varausta.<br>';
-    html = html+ ' Voit varata ylläolevan "Valitse huone" valikon kautta itsellesi tiloja.'; 
-    html = html+ ' </div>';
-    html = html+ ' </div>';
-    html = html+ ' </div>';
+        var html = '<div class="container">';
+        html = html+ ' <div class="row">';
+        html = html+ ' <div class="col-xs-4 col-xs-offset-4">';
+        html = html+ ' Sinulla ei ole yhtään voimassaolevaa varausta.<br>';
+        html = html+ ' Voit varata ylläolevan "Valitse huone" valikon kautta itsellesi tiloja.'; 
+        html = html+ ' </div>';
+        html = html+ ' </div>';
+        html = html+ ' </div>';
     }
     return html;
 }
 
+function automagicRoomButons(neededButtons) {
+    buttonDropdown = document.getElementById('room-selector');
+    var butons = JSON.parse(neededButtons);
+    var listOfButtons = {};
+    for (i = 0; i < butons.length; i++) {
+        //console.log(i);
+      var li = document.createElement("li");
+      var link = document.createElement("a");
+      var text = document.createTextNode(butons[i].name);
+      var buttonId = "huone"+butons[i].id;
+      //console.log(text);
+      link.appendChild(text);
+      link.href = "#";
+      link.id = buttonId;
+      li.appendChild(link);
+      listOfButtons[i] = buttonId;
+      
+      buttonDropdown.appendChild(li);
+      
+      
+      //newButton = document.createElement('input');
+      //newButton.type = 'button';
+      //newButton.value = neededButtons[i];
+      //newButton.id = neededButtons[i];
+      //newButton.onclick = function () {
+      //  alert('You pressed '+this.id);
+      //};
+      //buttonContainer.appendChild(newButton);
+    }
 
-$( document ).ready(function() {
-    console.log("Sivun lataus valmis.");
+    return listOfButtons;
     
-
-    // Huoneiden dropdown valikon nääppäilyt
+}
+function enableRooms(rooms) {
+    
+    //for (var room in rooms) {
+    //    console.log("Luodaan linkki tilalle: "+rooms[room]);
+    //    var linkID = rooms[room];
+    //    var roomID = linkID.slice(5);
+    //    $( '#'+linkID ).click( function(event) {
+    //        console.log("Valittu "+linkID);
+    //        roomSelection(roomID);
+    //    });
+    //}
+    
+    //Huoneiden dropdown valikon nääppäilyt
     $( '#huone1' ).click( function(event) {
         console.log("Valittu huone1");
         roomSelection(1);
@@ -175,7 +293,11 @@ $( document ).ready(function() {
         console.log("Valittu huone3");
         roomSelection(3);
     });
+}
+
+function enableButtons() {
     
+
     // Yliopiston nimen kliksautus
     $( '#index' ).click( function(event) {
         //window.location="../";
@@ -210,8 +332,8 @@ $( document ).ready(function() {
             data: $( '#login_form' ).serialize(),
             success: function(html)
             {
-                console.log(html);
-                if(html)
+                //console.log(html);
+                if (html != "False" )
                 {
                     //console.log(USERID);
                     window.location="../";
@@ -228,6 +350,23 @@ $( document ).ready(function() {
         });
         return false;
     });
+}
+
+$( document ).ready(function() {
+    //console.log(getDaysOfWeek(new Date()));
+
+    $.ajax(
+    {
+        type:"GET",
+        url:"api.php/locations/",
+        success: function( result ) {
+            var list = automagicRoomButons(result);
+            //console.log(list);
+            enableRooms(list);
+        }
+    });
+    enableButtons();
+    console.log("Sivun lataus valmis.");
 });
 
 

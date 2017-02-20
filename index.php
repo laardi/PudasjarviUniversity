@@ -38,11 +38,11 @@ include("huoneet.php");
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Valitse Huone 
                         <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" id="room-selector">
                             <?php
-                            foreach ($huoneet as $nro => $huone) {
-                                echo '<li><a id="huone'.$nro.'" href="#">'.$huone.'</a></li>';
-                            }
+                            //foreach ($huoneet as $nro => $huone) {
+                            //    echo '<li><a id="huone'.$nro.'" href="#">'.$huone.'</a></li>';
+                            //}
                             ?>
                         </ul>
                     </li>
