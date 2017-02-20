@@ -22,16 +22,25 @@ function FINtoISO(time) {
     return time;
 }
 
+function keyOfValue(obj, value) {
+    for (i in obj) {
+        if (obj[i] == value) {
+        return i;
+        }
+    }
+}
+
 function roomReservations(room, week) {
     var start = FINtoISO(week[0]);
     var end = FINtoISO(week[6]);
-    var reservationCalendar ={};
-    
+    var reservationCalendar = {};
+    //week = week.every();
+    var paivat = [ "Ma", "Ti", "Ke", "To", "Pe", "La", "Su" ];
     
     for (kelo = 8; kelo < 19; kelo = kelo +2) {
         reservationCalendar[kelo] = {};
         for (i=0;i<7;i++) {
-            reservationCalendar[kelo][week[i]] = "";
+            reservationCalendar[kelo][paivat[i]] = "";
         }   
     }
     //console.log(reservationCalendar);
@@ -44,12 +53,16 @@ function roomReservations(room, week) {
             if (result.length > 2) {
                 //console.log(JSON.parse(result));
                 var res = JSON.parse(result);
+               // var paivat = [ "Ma", "Ti", "Ke", "To", "Pe", "La", "Su" ];
 
                 while (res.length>0){
                     var foo = res.shift();
-                    reservationCalendar[foo.time][foo.date] = "Varattu";
+                    var tI = keyOfValue(week, foo.date);
+                    reservationCalendar[foo.time][paivat[tI]] = "Varattu";
                 }
                 //console.log(reservationCalendar);
+                var html = drawReservationCalendar(room, reservationCalendar, week);
+                $("#main_area").html( html );
             }
             else {
                 console.log("Not found stuf");
@@ -87,7 +100,8 @@ function roomSelection( roomID ) {
         $.get('huone.php?huone='+roomID, function ( data ) {
         $("#main_area").html( data );
         //kalenteri();
-        drawReservationCalendar(roomID, roomReservations(roomID, getDaysOfWeek(new Date())),getDaysOfWeek(new Date()));
+        roomReservations(roomID, getDaysOfWeek(new Date()));
+        //drawReservationCalendar(roomID, ,getDaysOfWeek(new Date()));
     });
 }
 
@@ -123,6 +137,7 @@ function kalenteri() {
 function drawReservationCalendar(room, reservations, week) {
     // room = kayttajan ID
     var paivat = [ "Ma", "Ti", "Ke", "To", "Pe", "La", "Su" ];
+    var uid = getCookie('userid');
     var html =  "<div class='container'>";
         html = html +     "<table  class='table table-striped table-condensed table-bordered'>";
         html = html +         "<tr>";
@@ -132,44 +147,35 @@ function drawReservationCalendar(room, reservations, week) {
         }
         html = html +         "</tr>";
         //html = html +                 for ($i=8; $i<=18; $i=$i+2) {
-            
-        console.log(reservations);
-        console.log(reservations[8]["21.2.2017"]);
 
         
         for (i = 8; i<19; i = i+2) {
-            for (j=0;j<7;j++) {
-                //html = html + "<tr><td>" + reservations[time] +"-" + (Number(reservations[time])+2) + "</td>";
-                //console.log(i);
-                //console.log(j);
-                //console.log(week[j]);
-                //console.log(reservations[i]);
-                //var poop = reservations[i];
-                //var clit = week[j];
-                //console.log(poop);
-                //console.log(reservations[i][week[1]]);
-                //html = html + "</tr>";
-                //console.log(reservations[time]);
+            var kello = reservations[i];
+            html = html +         "<tr>";
+            html = html +         "<td>"+i+":00-"+(i+2)+":00</td>";
+            
+            //console.log(JSON.stringify(kello));
+            for (index in week) {
+                var pva = paivat[index];
+                //console.log(week[index]);
+                console.log("asd:"+index+", foo:"+kello[pva]);
                 
-
-
-                    
+                if (kello[pva] == "Varattu") {
+                    html = html + "<td>  </td>";  // Jos huone on varattu niin jätetään tyhjäksi
+                }
+                else if (uid.length > 0) {
+                    html += "<td><a id='reserve-room' href='/api.php/reserve/"+uid+"/"+room+"/"+week[index]+"/"+i+"/'> Vapaa </td>";
+                }
+                else {
+                    html += "<td> Vapaa</td>";
+                }
+                
             }
+            html = html +         "</tr>";
         }
-            
-            
-        //html = html +                     $j = $i +2;
-        //html = html +                     echo "<tr>";
-        //html = html +                     echo "<td>$i-$j</td>";
-        //html = html +                     for ($k=1; $k<=7; $k++) {
-        //html = html +                         echo "<td>Jill</td>";
-        //html = html +                     }
-        //html = html +                     echo "</tr>";
-        //html = html +                 }
-
         html = html +     "</table>";
         html = html + "</div>'";
-        
+        return html;
 }
 
 function getMonday(d) {
