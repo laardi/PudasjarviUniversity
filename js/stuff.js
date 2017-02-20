@@ -324,24 +324,15 @@ function roomReserveButton() {
 function enableButtons() {
     $('#confirm-reservation').on('show.bs.modal', function(e) {
         $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        var doo = "<p>Haluatko varmasti varata tämän tilan?</p>";
+        $('#confirm-reservation .modal-body').html(doo);
         $('.btn-ok').click( function(e) {
             var href = $('.btn-ok').attr('href');
-            
-            e.preventDefault();
+            //e.preventDefault();
             console.log("Dingdong");
             console.log(href);
+            modal.close();
         });
-        //window.location="../";
-        //var href = $(this).find
-        //e.preventDefault();
-        //console.log(href);
-        //$.get(href, function (data) {
-        //    if (data=="True"){
-        //        console.log("Onnistui");
-        //    }
-        //})
-        //$("#confirm-reservation .close").click();
-       // return false;
     });
 
     // Yliopiston nimen kliksautus

@@ -143,7 +143,7 @@ $app->get('/reserve/{uid}/{roomid}/{day}/{hour}/', function ($request, $response
     $stmt1->bindParam(":hour",$hour);
     $stmt1->execute();
     $res = $stmt1->fetch(PDO::FETCH_ASSOC);
-    if (!isset($res)) {
+    if (empty($res)) {
         $stmt = $this->db->prepare("INSERT INTO `reservations` (`resID`, `userID`, `location`, `starttime`, `endtime`, `date`, `time`) VALUES (NULL, :uid, :rid, '', '', :day, :hour);
 "); 
         $stmt->bindParam(":uid",$uid);
