@@ -157,7 +157,7 @@ $app->get('/reserve/{uid}/{roomid}/{day}/{hour}/', function ($request, $response
     $roomid = (int)$args['roomid'];
     $day = (string)$args['day'];
 
-    $day = explode( ".",    $day);
+    $day = explode( "-",    $day);
     
     $day = $day[2]."-".$day[1]."-".$day[0];
     $hour = (int)$args['hour'];
