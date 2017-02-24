@@ -16,20 +16,10 @@ function getCookie(cname) {
     return "";
 }
 
-function FINtoISO(time) {
-    if (time.includes(".")) {
-        var time = time.split(".");
-    }
-    else if (time.includes("/")) {
-        var time = time.split("/");
-    }
-    
-    if (time[0] < 32) {
-        time = time[2]+"-"+time[1]+"-"+time[0];
-    }
-    else {
-        time = time[0]+"-"+time[1]+"-"+time[2];
-    }
+function ISOtoFIN(time) {
+    console.log(time);
+    var time = time.split("-");
+    time = time[2]+"-"+time[1]+"-"+time[0]
     return time;
 }
 
@@ -42,10 +32,10 @@ function keyOfValue(obj, value) {
 }
 
 function roomReservations(room, week) {
-    var start = FINtoISO(week[0]);
-    var end = FINtoISO(week[6]);
-    console.log(start);
-    console.log(end);
+    //var start = FINtoISO(week[0]);
+    //var end = FINtoISO(week[6]);
+    var start = week[0];
+    var end = week[6];
     var reservationCalendar = {};
     //week = week.every();
     var paivat = [ "Ma", "Ti", "Ke", "To", "Pe", "La", "Su" ];
@@ -170,7 +160,7 @@ function drawReservationCalendar(room, reservations, week) {
         html = html +         "<tr>";
         html = html +             "<td><b>Kello</b></td>";
         for (i = 0; i<7 ;i++) {
-            html = html + "<th>"+paivat[i]+" "+week[i]+"</th>";
+            html = html + "<th>"+paivat[i]+" "+ISOtoFIN(week[i])+"</th>";
         }
         html = html +         "</tr>";
         //html = html +                 for ($i=8; $i<=18; $i=$i+2) {
@@ -193,7 +183,7 @@ function drawReservationCalendar(room, reservations, week) {
                 else if (uid.length > 0) {
                     //html += "<td><a class='reserveRoom' href='/api.php/reserve/"+uid+"/"+room+"/"+week[index]+"/"+i+"/'> Vapaa </td>";
                     
-                    html += '<td><a href="#" data-href="/api.php/reserve/'+uid+'/'+room+'/'+week[index]+'/'+i+'/" data-toggle="modal" data-target="#confirm-reservation">Vapaa</a></td>';
+                    html += '<td><a href="#" data-href="/api.php/reserve/'+uid+'/'+room+'/'+ISOtoFIN(week[index])+'/'+i+'/" data-toggle="modal" data-target="#confirm-reservation">Vapaa</a></td>';
 
                     //html +='   <td ><button class="btn btn-default" data-href="/api.php/reserve/"+uid+"/"+room+"/"+week[index]+"/"+i+"/" data-toggle="modal" data-target="#confirm-reservation"> Vapaa </button></td>';
 
@@ -221,11 +211,11 @@ function getDaysOfWeek(pvm) {
     var lista = {};
     //var dat = new Date();
     pvm = getMonday(pvm);
-    lista[0] = pvm.toLocaleString().slice(0,9);
+    lista[0] = pvm.toISOString().slice(0,10);
     
     for (i = 1; i<7; i++) {
         pvm.setDate(pvm.getDate() + 1);
-        lista[i] = pvm.toLocaleString().slice(0,9);
+        lista[i] = pvm.toISOString().slice(0,10);
     }
     return lista;
 }
