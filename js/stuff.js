@@ -17,7 +17,7 @@ function getCookie(cname) {
 }
 
 function ISOtoFIN(time) {
-    console.log(time);
+    //console.log(time);
     var time = time.split("-");
     time = time[2]+"-"+time[1]+"-"+time[0]
     return time;
@@ -25,8 +25,9 @@ function ISOtoFIN(time) {
 
 function keyOfValue(obj, value) {
     for (i in obj) {
+        console.log(obj[i]+"=?="+value);
         if (obj[i] == value) {
-        return i;
+            return i;
         }
     }
 }
@@ -36,6 +37,8 @@ function roomReservations(room, week) {
     //var end = FINtoISO(week[6]);
     var start = week[0];
     var end = week[6];
+    console.log(start);
+    console.log(end);
     var reservationCalendar = {};
     //week = week.every();
     var paivat = [ "Ma", "Ti", "Ke", "To", "Pe", "La", "Su" ];
@@ -55,15 +58,19 @@ function roomReservations(room, week) {
         success: function(result) {
             if (result.length > 2) {
                 //console.log(JSON.parse(result));
+                //console.log(result);
                 var res = JSON.parse(result);
                // var paivat = [ "Ma", "Ti", "Ke", "To", "Pe", "La", "Su" ];
 
                 while (res.length>0){
                     var foo = res.shift();
+                    //console.log(foo.date);
                     var tI = keyOfValue(week, foo.date);
+                    console.log(foo);
+                    console.log(week);
                     reservationCalendar[foo.time][paivat[tI]] = "Varattu";
                 }
-                //console.log(reservationCalendar);
+                console.log(reservationCalendar);
                 var html = drawReservationCalendar(room, reservationCalendar, week);
                 
             }
@@ -168,6 +175,7 @@ function drawReservationCalendar(room, reservations, week) {
         
         for (i = 8; i<19; i = i+2) {
             var kello = reservations[i];
+            console.log(kello);
             html = html +         "<tr>";
             html = html +         "<td>"+i+":00-"+(i+2)+":00</td>";
             

@@ -116,7 +116,7 @@ $app->get('/reservations/{id}/{start}/{end}/', function ($request, $response, $a
     //$start = strtotime()
     //$resid = (int)$args['resid'];
     $this->logger->addInfo("Reservation by roomid");
-    $stmt = $this->db->prepare("SELECT date_format(reservations.date,'%e.%c.%Y') as date, reservations.time from reservations where reservations.location = :id and reservations.date BETWEEN cast( :start as date) and cast( :end as date)");
+    $stmt = $this->db->prepare("SELECT date_format(reservations.date,'%Y-%m-%d') as date, reservations.time from reservations where reservations.location = :id and reservations.date BETWEEN cast( :start as date) and cast( :end as date)");
     $stmt->bindParam(":id",$id);
     $stmt->bindParam(":start",$start);
     $stmt->bindParam(":end",$end);
