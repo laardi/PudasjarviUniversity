@@ -104,6 +104,9 @@ $app->get('/users/reservations/{id}/', function ($request, $response, $args) {
     echo json_encode($reservations);
 });
 
+
+
+
 // ------------------------- GET /RESERVATIONS/ID/WEEKSTART/WEEKEND/ --------
 $app->get('/reservations/{id}/{start}/{end}/', function ($request, $response, $args) {
 
@@ -122,6 +125,29 @@ $app->get('/reservations/{id}/{start}/{end}/', function ($request, $response, $a
     //$response->getBody()->write(var_export($users, true));
     //return $response;
     echo json_encode($reservations);
+});
+
+// ------------------------- GET /DELETE/RID/--------
+$app->get('/delete/{rid}/', function ($request, $response, $args) {
+    // Used to delete users reservations
+    $rid = (int)$args['rid'];
+    $this->logger->addInfo("Reservation deletetion by reservationid");
+    $stmt = $this->db->prepare("select * from reservations where resID = :rid");
+    $stmt->bindParam(":rid",$rid);
+    $stmt->execute();
+    $reservations = $stmt->fetchall(PDO::FETCH_ASSOC);
+    if (!empty($reservations)) {
+        $stmt2 = $this->db->prepare("DELETE FROM reservations WHERE reservations.resID = :rid");
+        $stmt2->bindParam(":rid",$rid);
+        $result = $stmt2->execute();
+        echo json_encode($result);
+    }
+    else {
+        echo "Pop";
+        
+    }
+    //$response->getBody()->write(var_export($users, true));
+    //return $response;
 });
 
 // ------------------------- GET /RESERVE/USERID/ROOMID/DAY/HOUR/ --------

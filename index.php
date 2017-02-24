@@ -116,7 +116,29 @@ include("huoneet.php");
                         <p>Pitäskö varata</p>
                     </div>
                     <div class="modal-footer">
-                        <a class="btn btn-success btn-ok">Kyllä</a>
+                        <a class="btn btn-success btn-ok varaa">Kyllä</a>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Ei</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- Modal varauksen poistoa varten-->
+        <div class="modal fade" role="dialog" id="delete-reservation" aria-hidden="true">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Varauksen poisto</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Poistetaanko varaus?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-success btn-ok poista">Kyllä</a>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Ei</button>
                     </div>
                 </div>

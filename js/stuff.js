@@ -69,7 +69,7 @@ function roomReservations(room, week) {
                 var html = drawReservationCalendar(room, reservationCalendar, week);
             }
             $("#main_area").html( html );
-            roomReserveButton();
+            //roomReserveButton();
         }
     });
     return reservationCalendar;
@@ -95,6 +95,7 @@ function userReservations(user) {
             }
             //console.log(html);
             $("#main_area").html( html );
+            
         }
     });
 }
@@ -143,7 +144,15 @@ function drawReservationCalendar(room, reservations, week) {
     var paivat = [ "Ma", "Ti", "Ke", "To", "Pe", "La", "Su" ];
     var uid = getCookie('userid');
     var html =  "<div class='container'>";
-        html += "<div class='col-xs-4 col-xs-offset-4'>Kirjautumalla sisään voit varata tilan "+rooms[room-1]+" alla olevien linkkien kautta.</div>";
+        
+        //html += "<div class='col-xs-4 col-xs-offset-4'>Kirjautumalla sisään voit varata tilan "+rooms[room-1]+" alla olevien linkkien kautta.</div>";
+        var uid = getCookie('userid');
+        if (uid) {
+            html += "<div class='well' id='huone-info'>"+rooms[room-1]+"<br><br>Klikkaamalla vapaata aikaa voit varata se itsellesi.</div>";
+        }
+        else {
+            html += "<div class='well' id='huone-info'>"+rooms[room-1]+"<br><br>Kirjautumalla sisään voit varata vapaina olevia aikoja</div>";
+        }
         html = html +     "<table  class='table table-striped table-condensed table-bordered'>";
         html = html +         "<tr>";
         html = html +             "<td><b>Kello</b></td>";
@@ -213,6 +222,7 @@ function drawReservationTable(reservations)  {
     if (typeof reservations == 'object') {
         //console.log(reservations);
         var html = '<div class="container">                                                                                                         ';
+        html += '<div class="well" id="user-info">Voit tarkastella varauksiasi täältä. Varauksen voi poistaa painamalla varauksen kohdalla olevaa "Poista" linkkiä. <br>Aloita uuden tilan varaaminen valitsemalla ylhäältä huone.</div>';
         html =html+ '    <div class="row">                                                                                                           ';
         html =html+ '        <div class="col-xs-5 col-xs-offset-3">                                                                                  ';
         html =html+ '        <table  class="table table-striped table-bordered table-condensed">                                                     ';
@@ -230,7 +240,8 @@ function drawReservationTable(reservations)  {
             var klo1 = Number(reservations[i].time);
             var klo = klo1+":00-"+(klo1+2)+":00";
             html =html+ '<tr>'; 
-            html =html+ "<td>"+paikka+"</td><td>"+pvm+"</td><td>"+klo+"</td><td><a href='#' id='poistaVaraus' value='"+varausID+"'>Poista</a></td>";   
+            html =html+ "<td>"+paikka+"</td><td>"+pvm+"</td><td>"+klo+"</td>";
+            html += '<td><a href="#" data-href="/api.php/delete/'+varausID+'/" data-toggle="modal" data-target="#delete-reservation">Poista</a></td>';   
             html =html+ '</tr>';
         }                                                                                                        
         html =html+ '        </table>                                                                                                                ';
@@ -311,27 +322,63 @@ function enableRooms(rooms) {
     });
 }
 
-function roomReserveButton() {
-    $( '.reserveRoom' ).click( function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        console.log("Clikked link");
-        var href = this.getAttribute('href');
-        console.log(href);
-    });
-}
+//function roomReserveButton() {
+//    $( '.reserveRoom' ).click( function(event) {
+//        event.preventDefault();
+//        event.stopPropagation();
+//        console.log("Clikked link");
+//        var href = this.getAttribute('href');
+//        console.log(href);
+//    });
+//}
 
 function enableButtons() {
+    // Varausten vahvistaminen
     $('#confirm-reservation').on('show.bs.modal', function(e) {
         $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-        var doo = "<p>Haluatko varmasti varata tämän tilan?</p>";
-        $('#confirm-reservation .modal-body').html(doo);
+        var teksti = "<p>Haluatko varmasti varata tämän tilan?</p>";
+        $('#confirm-reservation .modal-body').html(teksti);
         $('.btn-ok').click( function(e) {
             var href = $('.btn-ok').attr('href');
-            //e.preventDefault();
-            console.log("Dingdong");
+            var roomID = href.split('/');
+            //console.log(roomID);
+            roomID = roomID[4];
+            e.preventDefault();
+            //console.log(roomID);
+            //console.log(href);
+            $.ajax({
+                type: "GET",
+                url: href,
+                success: function(event) {
+                    $('#confirm-reservation').modal('hide');
+                    roomReservations(roomID, getDaysOfWeek(new Date()));
+                }
+            });
+        });
+    });
+    
+    // Varausten poistaminen
+    $('#delete-reservation').on('show.bs.modal', function(e) {
+        $(this).find('.poista').attr('href', $(e.relatedTarget).data('href'));
+        var teksti = "<p>Haluatko varmasti poistaa tämän varauksen?</p>";
+        $('#delete-reservation .modal-body').html(teksti);
+        $('.btn-ok').click( function(e) {
+            var href = $('.poista').attr('href');
+            //console.log(roomID);
+            e.preventDefault();
+            //console.log(roomID);
             console.log(href);
-            modal.close();
+            $.ajax({
+                type: "GET",
+                url: href,
+                success: function(result) {
+                    console.log(result);
+                    $('#delete-reservation').modal('hide');
+                    var uid = getCookie('userid');
+                    userReservations(uid);
+                    //roomReservations(roomID, getDaysOfWeek(new Date()));
+                }
+            });
         });
     });
 
