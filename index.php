@@ -72,7 +72,8 @@ include("huoneet.php");
             //    include('userIndex.php');
             //}
             //else {
-                echo file_get_contents('etusivu.php');
+                //echo file_get_contents('etusivu.php');
+                include('etusivu.php');
             //}
              ?>
         </div>

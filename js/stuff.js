@@ -148,10 +148,10 @@ function drawReservationCalendar(room, reservations, week) {
         //html += "<div class='col-xs-4 col-xs-offset-4'>Kirjautumalla sisään voit varata tilan "+rooms[room-1]+" alla olevien linkkien kautta.</div>";
         var uid = getCookie('userid');
         if (uid) {
-            html += "<div class='well' id='huone-info'>"+rooms[room-1]+"<br><br>Klikkaamalla vapaata aikaa voit varata se itsellesi.</div>";
+            html += "<div class='well' id='huone-info'><b>"+rooms[room-1]+"</b><br><br>Klikkaamalla vapaata aikaa voit varata se itsellesi.</div>";
         }
         else {
-            html += "<div class='well' id='huone-info'>"+rooms[room-1]+"<br><br>Kirjautumalla sisään voit varata vapaina olevia aikoja</div>";
+            html += "<div class='well' id='huone-info'><b>"+rooms[room-1]+"</b><br><br>Kirjautumalla sisään voit varata vapaina olevia aikoja</div>";
         }
         html = html +     "<table  class='table table-striped table-condensed table-bordered'>";
         html = html +         "<tr>";
