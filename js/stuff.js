@@ -17,8 +17,19 @@ function getCookie(cname) {
 }
 
 function FINtoISO(time) {
-    var time = time.split(".");
-    time = time[2]+"-"+time[1]+"-"+time[0]
+    if (time.includes(".")) {
+        var time = time.split(".");
+    }
+    else if (time.includes("/")) {
+        var time = time.split("/");
+    }
+    
+    if (time[0] < 32) {
+        time = time[2]+"-"+time[1]+"-"+time[0];
+    }
+    else {
+        time = time[0]+"-"+time[1]+"-"+time[2];
+    }
     return time;
 }
 
@@ -33,6 +44,8 @@ function keyOfValue(obj, value) {
 function roomReservations(room, week) {
     var start = FINtoISO(week[0]);
     var end = FINtoISO(week[6]);
+    console.log(start);
+    console.log(end);
     var reservationCalendar = {};
     //week = week.every();
     var paivat = [ "Ma", "Ti", "Ke", "To", "Pe", "La", "Su" ];
