@@ -63,6 +63,7 @@ include("huoneet.php");
         </nav>
         
 
+        <div class="container-fluid">
         
         <div class="row" id="main_area">
             <!-- <iframe id="the_iframe" src="etusivu.php" width="95%" frameborder="0" scrolling="no"></iframe> -->
@@ -78,7 +79,7 @@ include("huoneet.php");
              ?>
         </div>
         
-        
+        </div>
         
         <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
             <div class="modal-dialog">
